@@ -26,4 +26,5 @@ jobs:                                 #任务
         with: 
           ACCESS_TOKEN: ${{ secrets.GH_ACTION_TEST_KEY }}
           BRANCH: gh-pages
-          FOLDER: public
+          FOLDER: public              #设置要部署的目录（记得 hexo generate 先生成）
+          COMMIT_NAME: "Github Pages Deploy Action `Date + '%Y-%m-%d %H:%M'`"
