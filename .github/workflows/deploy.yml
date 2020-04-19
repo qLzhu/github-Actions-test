@@ -1,0 +1,29 @@
+name: Github Action Build and Deploy  #Workflow 名称随便定义
+
+on:                                   #设置触发 Workflow 的事件
+  push:                               #push 提交事件触发
+    branches:                         #设置分支
+      - master
+
+jobs:                                 #任务
+  build:                              #任务名称叫 build
+    runs-on: ubuntu-latest            #设置虚拟服务器环境（ubuntu最新版本）
+    steps:                            #任务要执行的步骤
+      - name: Pull Code               #Action 名称
+        uses: actions/checkout@v2     #使用action库 actions/checkout获取源码
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "10.x"        #要安装的node版本
+      - name: NPM Install Packges
+        run: |
+          npm install hexo-cli -g
+          npm install
+          hexo clean
+          hexo generate
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with: 
+          ACCESS_TOKEN: ${{ secrets.GH_ACTION_TEST_KEY }}
+          BRANCH: gh-pages
+          FOLDER: public
